@@ -1,0 +1,14 @@
+﻿<!-- CafePOS.Wpf/Views/MainMenuView.xaml -->
+<UserControl x:Class="CafePOS.Wpf.Views.MainMenuView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Border Padding="24">
+        <StackPanel Width="360">
+            <TextBlock Text="Hauptmenü" FontWeight="Bold" FontSize="20" Margin="0,0,0,16"/>
+            <Button Content="1. Chef"        Command="{Binding ChefCmd}"        Margin="0,0,0,8"/>
+            <Button Content="2. Mitarbeiter" Command="{Binding MitarbeiterCmd}" Margin="0,0,0,8"/>
+            <Button Content="3. Kunde"       Command="{Binding KundeCmd}"       Margin="0,0,0,8"/>
+            <Button Content="4. Beenden"     Command="{Binding BeendenCmd}"/>
+        </StackPanel>
+    </Border>
+</UserControl>
