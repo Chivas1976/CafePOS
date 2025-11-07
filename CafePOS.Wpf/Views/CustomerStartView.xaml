@@ -1,0 +1,16 @@
+﻿<!-- CafePOS.Wpf/Views/CustomerStartView.xaml -->
+<UserControl x:Class="CafePOS.Wpf.Views.CustomerStartView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DockPanel Margin="24">
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,12">
+            <Button Content="← Zurück" Command="{Binding ZurueckCmd}" Margin="0,0,12,0"/>
+            <TextBlock Text="Kunden-Funktionalität" FontSize="18" FontWeight="Bold" VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Button Content="1. Bestellung aufgeben" Padding="20,10"
+                    Command="{Binding BestellungAufgebenCmd}"/>
+        </StackPanel>
+    </DockPanel>
+</UserControl>

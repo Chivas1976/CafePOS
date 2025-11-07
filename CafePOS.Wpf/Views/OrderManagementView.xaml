@@ -1,0 +1,197 @@
+﻿<!-- CafePOS.Wpf/Views/OrderManagementView.xaml -->
+<UserControl x:Class="CafePOS.Wpf.Views.OrderManagementView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DockPanel Margin="12">
+
+        <!-- Gornja traka -->
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,8">
+            <Button Content="← Zurück" Command="{Binding ZurueckCmd}" Margin="0,0,12,0"/>
+            <TextBlock Text="Bestellung verwalten" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
+
+            <StackPanel Orientation="Horizontal" Margin="16,0,0,0">
+                <Button Content="Aktualisieren" Command="{Binding RefreshCmd}" Margin="0,0,6,0"/>
+                <Button Content="Öffnen" Command="{Binding OpenCmd}" Margin="0,0,6,0"
+                        IsEnabled="{Binding Selected}"/>
+                <Button Content="Ordner öffnen" Command="{Binding OpenFolderCmd}" Margin="0,0,6,0"/>
+                <Button Content="Löschen" Command="{Binding DeleteCmd}" IsEnabled="{Binding CanDelete}"  Margin="0,0,6,0"/>
+                <Button Content="Neue Bestellung" Command="{Binding NeueBestellungCmd}"/>
+
+            </StackPanel>
+
+            <TextBlock Text="{Binding Benutzer.Anzeige}"
+                       Margin="16,0,0,0" VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <!-- Tabela belega -->
+        <DataGrid ItemsSource="{Binding Belege}"
+                  SelectedItem="{Binding Selected, Mode=TwoWay}"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Datum"
+                                    Binding="{Binding Datum, StringFormat={}{0:dd.MM.yyyy HH:mm}}"
+                                    Width="220"/>
+                <DataGridTextColumn Header="Endsumme (€)"
+                                    Binding="{Binding Endsumme, StringFormat={}{0:F2}}"
+                                    Width="140"/>
+                <DataGridTextColumn Header="Positionen"
+                                    Binding="{Binding Positionen.Count}"
+                                    Width="110"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Donji red: Nova narudžba -->
+    
+    </DockPanel>
+</UserControl>
+
+
+
+<!-- CafePOS.Wpf/Views/ProductMenuView.xaml --><!--
+<UserControl x:Class="CafePOS.Wpf.Views.OrderManagementView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <UserControl.InputBindings>
+        --><!-- ENTER = dodaj u korpu --><!--
+        <KeyBinding Key="Enter" Command="{Binding InWarenkorbCmd}" />
+        --><!-- DELETE = izbaci iz korpe --><!--
+        <KeyBinding Key="Delete" Command="{Binding AusWarenkorbCmd}"
+                CommandParameter="{Binding SelectedItem, ElementName=WarenkorbGrid}"/>
+        --><!-- CTRL+S = plati i sačuvaj --><!--
+        <KeyBinding Modifiers="Control" Key="S" Command="{Binding BelegSpeichernCmd}" />
+    </UserControl.InputBindings>
+    <DockPanel Margin="12">
+
+        --><!-- Gornja traka: nazad + kategorije --><!--
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,8">
+            <Button Content="← Zurück" Command="{Binding ZurueckCmd}" Style="{StaticResource SecondaryButton}"/>
+            <TextBlock Text="Bestellung aufgeben" Style="{StaticResource Title2}" VerticalAlignment="Center" Margin="16,0,0,0"/>
+
+            <StackPanel Orientation="Horizontal" Margin="24,0,0,0">
+                <Button Content="Alle"     Margin="0,0,6,0" Click="Alle_Click" Style="{StaticResource SecondaryButton}"/>
+                <Button Content="Knödel"   Margin="0,0,6,0" Click="Knoedel_Click" Style="{StaticResource SecondaryButton}"/>
+                <Button Content="Getränke"                 Click="Getraenke_Click" Style="{StaticResource SecondaryButton}"/>
+            </StackPanel>
+        </StackPanel>
+
+
+        --><!-- Dve kolone: 50% / 50% --><!--
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            --><!-- ===================== LEVO: SPEISEKARTE ===================== --><!--
+            <DockPanel Grid.Column="0" Margin="0,0,8,0">
+                --><!-- Pretraga i filter --><!--
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="0,0,0,8">
+                    <TextBlock Text="Suche:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <TextBox Width="220"
+                             Text="{Binding Suchtext, UpdateSourceTrigger=PropertyChanged}"
+                             ToolTip="Nach Name oder ID filtern"/>
+                    <Button Content="Zurücksetzen" Margin="8,0,0,0"
+                            Command="{Binding FilterZuruecksetzenCmd}"/>
+                    <CheckBox Content="Nur verfügbare" Margin="12,0,0,0"
+                              IsChecked="{Binding NurVerfuegbar}"/>
+                </StackPanel>
+
+                <TextBlock Text="Speisekarte" Style="{StaticResource Title2}" DockPanel.Dock="Top"/>
+
+                --><!-- DONJE dugme PRE DataGrid-a -->
+             <!--   <Button Content="In den Warenkorb"
+        Command="{Binding InWarenkorbCmd}"
+        DockPanel.Dock="Bottom"
+        Style="{StaticResource PrimaryButton}"/>-->
+
+                <!-- DataGrid MORA biti poslednji u DockPanel-u --><!--
+                <DataGrid ItemsSource="{Binding ArtikelView}"
+                          SelectedItem="{Binding AusgewaehlterArtikel, Mode=TwoWay}"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="{Binding IstSpeisekarteReadOnly}"
+                          SelectionMode="Single"
+                          SelectionUnit="FullRow"
+                          MouseDoubleClick="Speisekarte_DoubleClick">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID"       Width="70" Binding="{Binding Id, Mode=TwoWay}" />
+                        <DataGridTextColumn Header="Name"     Width="*"  Binding="{Binding Name, Mode=TwoWay, ValidatesOnDataErrors=True}" />
+                        <DataGridTextColumn Header="Preis (€)" Width="120" Binding="{Binding Preis, Mode=TwoWay, ValidatesOnDataErrors=True, StringFormat={}{0:F2}}" />
+                        <DataGridTextColumn Header="Lager (x)" Width="120" Binding="{Binding Menge, Mode=TwoWay, ValidatesOnDataErrors=True}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </DockPanel>
+
+            --><!-- ===================== DESNO: WARENKORB ===================== --><!--
+            <Grid Grid.Column="1" Margin="8,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    --><!-- naslov --><!--
+                    <RowDefinition/>
+                    --><!-- tabela --><!--
+                    <RowDefinition Height="Auto"/>
+                    --><!-- donji panel sa sumama i dugmadima --><!--
+                </Grid.RowDefinitions>
+
+                --><!-- Naslov --><!--
+                <TextBlock Grid.Row="0"
+                           Text="Warenkorb"
+                           FontWeight="Bold" FontSize="16"
+                           Margin="0,0,0,8"/>
+
+                --><!-- Tabela korpe --><!--
+                <DataGrid Grid.Row="1" x:Name="WarenkorbGrid"
+                          ItemsSource="{Binding Warenkorb}"
+                          SelectedItem="{Binding AusgewaehltePosition, Mode=TwoWay}"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          GridLinesVisibility="None">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Name"       Width="*"   Binding="{Binding Name}" />
+                        <DataGridTextColumn Header="Einzel (€)"  Width="96"  Binding="{Binding Einzelpreis, StringFormat={}{0:F2}}" />
+                        <DataGridTextColumn Header="Menge"       Width="72"  Binding="{Binding Menge}" />
+                        <DataGridTextColumn Header="Gesamt (€)"  Width="110" Binding="{Binding Gesamt, StringFormat={}{0:F2}}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                --><!-- Donji panel: kartica, PDV, sume, dugmad -->
+                <!-- Donji panel: kartica, PDV, sume, dugmad (sa prelamanjem) --><!--
+                <ScrollViewer Grid.Row="2"
+              Margin="0,8,0,0"
+              VerticalScrollBarVisibility="Disabled"
+              HorizontalScrollBarVisibility="Auto">
+                    <WrapPanel Orientation="Horizontal">
+                        <CheckBox Content="BitAndBiteCard (-10%)"
+                  IsChecked="{Binding BitAndBiteCard}" Margin="0,0,12,0"/>
+                        <CheckBox Content="MwSt" IsChecked="{Binding MwstAktiv}" Margin="0,0,4,0"/>
+                        <TextBox Width="40" Text="{Binding MwstSatz}" Margin="0,0,12,0" ToolTip="MwSt in %"/>
+
+                        <TextBlock Text="Zwischensumme:" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding Zwischensumme, StringFormat={}{0:F2} €}"
+                   Margin="4,0,12,0" VerticalAlignment="Center"/>
+
+                        <TextBlock Text="Rabatt:" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding RabattBetrag, StringFormat={}{0:F2} €}"
+                   Margin="4,0,12,0" VerticalAlignment="Center"/>
+
+                        <TextBlock Text="MwSt:" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding MwstBetrag, StringFormat={}{0:F2} €}"
+                   Margin="4,0,12,0" VerticalAlignment="Center"/>
+
+                        <TextBlock Text="Summe:" VerticalAlignment="Center" FontSize="14"/>
+                        <TextBlock Text="{Binding Gesamtsumme, StringFormat={}{0:F2} €}"
+                   FontWeight="Bold" FontSize="14" Margin="4,0,16,0"
+                   VerticalAlignment="Center"/>
+
+                        <Button Content="Aus Warenkorb"
+        Command="{Binding AusWarenkorbCmd}"
+        CommandParameter="{Binding SelectedItem, ElementName=WarenkorbGrid}"
+        Style="{StaticResource SecondaryButton}"/>
+                        <Button Content="Alles löschen" Command="{Binding AllesLoeschenCmd}" Style="{StaticResource SecondaryButton}"/>
+                        <Button Content="Bezahlen &amp; speichern" Command="{Binding BelegSpeichernCmd}" Style="{StaticResource PrimaryButton}"/>
+                    </WrapPanel>
+                </ScrollViewer>
+            </Grid>
+        </Grid>
+    </DockPanel>
+</UserControl>-->
